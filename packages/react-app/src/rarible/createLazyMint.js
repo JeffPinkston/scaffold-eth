@@ -29,7 +29,20 @@ async function createLazyMintForm(tokenId, contract, minter, ipfsHash) {
 }
 
 export async function createLazyMint(tokenId, provider, contract, minter, ipfsHash) {
-  const form = await createLazyMintForm(tokenId, contract, minter, ipfsHash)
+  //const form = await createLazyMintForm(tokenId, contract, minter, ipfsHash)
+  console.log('TokenID', tokenId);
+  console.log('Provider', provider);
+  console.log('Contract', contract);
+  console.log('Minter', minter);
+  console.log('ipfsHash', ipfsHash);
+  const form = {
+		"@type": "ERC721",
+		contract: contract,
+		tokenId: tokenId,
+		uri: `/ipfs/${ipfsHash}`,
+		creators: [{ account: minter, value: "10000" }],
+		royalties: []
+	}
   const signature = await sign(provider, 3, contract, form, minter)
 	return { ...form, signatures: [signature] }
 }
